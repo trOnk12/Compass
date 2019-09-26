@@ -5,8 +5,9 @@
               android:layout_height="match_parent">
 
     <ImageView
+            android:id="@+id/compass_image"
             android:layout_gravity="center"
-            android:background="@drawable/compass"
+            android:src="@drawable/compass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
     />
