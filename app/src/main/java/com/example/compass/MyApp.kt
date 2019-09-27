@@ -17,5 +17,4 @@ class MyApp : Application() {
         }
     }
 
-
 }
