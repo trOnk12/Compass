@@ -8,15 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), SensorService.OnSensorValueChangedListener {
-
-    override fun onSensorValueChanged(sensorValues: FloatArray) {
-        for (value in sensorValues) {
-            Log.d("TEST", "value$value")
-        }
-    }
-
-    lateinit var sensorService: SensorService
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +17,15 @@ class MainActivity : AppCompatActivity(), SensorService.OnSensorValueChangedList
         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-        sensorService =
-            SensorService(onSensorValueChangedListener = this, sensorManager = sensorManager, sensor = sensor)
+        val sensorService = SensorService(sensorManager, sensor)
+
+        sensorService.getSensorData().subscribe {
+            for (value in it) {
+                Log.d("TEST", value.toString())
+            }
+        }
 
     }
+
 
 }

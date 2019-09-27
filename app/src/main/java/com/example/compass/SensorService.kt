@@ -4,27 +4,26 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import io.reactivex.subjects.PublishSubject
+import java.util.*
 
-class SensorService(
-    var onSensorValueChangedListener: OnSensorValueChangedListener,
-    sensorManager: SensorManager,
-    sensor: Sensor
-) : SensorEventListener {
+class SensorService(sensorManager: SensorManager, sensor: Sensor) : SensorEventListener {
     init {
-        sensorManager.registerListener(this, sensor, 100)
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
+    var subject: PublishSubject<FloatArray> = PublishSubject.create()
+
+    fun getSensorData() : PublishSubject<FloatArray> {
+        return subject
+    }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-        p0?.let {
-            onSensorValueChangedListener.onSensorValueChanged(p0.values)
+        p0?.let { sensorEvent ->
+            subject.onNext(sensorEvent.values)
         }
     }
 
-    interface OnSensorValueChangedListener {
-        fun onSensorValueChanged(sensorValues: FloatArray)
-    }
-
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
 
 }
