@@ -2,23 +2,27 @@ package com.example.compass
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class MainActivityViewModel(var sensorService: SensorService) : BaseDisposableViewModel() {
+class MainActivityViewModel(var sensorService: CompassService) : BaseDisposableViewModel() {
 
-    private val _sensorData: MutableLiveData<FloatArray> = MutableLiveData()
-    val sensorData: LiveData<FloatArray> = _sensorData
+    private val _accelerometerData: MutableLiveData<FloatArray> = MutableLiveData()
+    val accelerometerData: LiveData<FloatArray> = _accelerometerData
+
+    private val _magnetometerData: MutableLiveData<FloatArray> = MutableLiveData()
+    val magnetometerData: LiveData<FloatArray> = _magnetometerData
 
     fun observeData() {
         compositeDisposable.add(
             sensorService.getSensorDataBus()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe { data ->
-                    _sensorData.value = data
+                .subscribe { sensorData ->
+                    when (sensorData) {
+                        is SensorData.AccelerometerData -> _accelerometerData.value = sensorData.sensorEvent.values
+                        is SensorData.MagnetometerData -> _magnetometerData.value = sensorData.sensorEvent.values
+                    }
                 }
         )
     }

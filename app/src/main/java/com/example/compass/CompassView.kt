@@ -13,6 +13,9 @@ class CompassView(context: Context,attrs:AttributeSet) : LinearLayout(context,at
         View.inflate(context, R.layout.compass_view, this)
     }
 
+    var accelerometerValues : FloatArray? = null
+    var magnetoMeterValues : FloatArray? = null
+
     var currentDegree = 0f
 
     fun rotateCompass(degree: Float) {

@@ -20,8 +20,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel.observeData()
-        viewModel.sensorData.observe(this, Observer {
-            compass.rotateCompass(it[0])
+        viewModel.accelerometerData.observe(this, Observer {
+            Log.d("TEST", "x$it[")
+
+            compass.accelerometerValues = it
+        })
+
+        viewModel.magnetometerData.observe(this, Observer {
+            Log.d("TEST", "x$it[")
+
+            compass.magnetoMeterValues = it
         })
 
     }
