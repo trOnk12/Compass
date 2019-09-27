@@ -4,7 +4,14 @@ import android.content.Context
 import android.content.Context.SENSOR_SERVICE
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+
+val viewModelModule = module {
+
+    viewModel { MainActivityViewModel(get()) }
+
+}
 
 val sensorServiceModule = module {
 
@@ -21,3 +28,5 @@ val sensorServiceModule = module {
     single { SensorService(get(), get()) }
 
 }
+
+

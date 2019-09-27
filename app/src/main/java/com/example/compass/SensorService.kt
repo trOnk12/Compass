@@ -14,7 +14,7 @@ class SensorService(sensorManager: SensorManager, sensor: Sensor) : SensorEventL
 
     var subject: PublishSubject<FloatArray> = PublishSubject.create()
 
-    fun getSensorData() : PublishSubject<FloatArray> {
+    fun getSensorDataBus() : PublishSubject<FloatArray> {
         return subject
     }
 
