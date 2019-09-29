@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content">
 
-    <ImageView
-            android:id="@+id/compass_image"
+    <com.example.compass.ui.compass.CompassPlateView
+            android:id="@+id/compass_plate_view"
+            android:layout_width="256dp"
+            android:layout_height="256dp"/>
+
+    <com.example.compass.ui.compass.CompassNeedleView
+            android:id="@+id/compass_needle_view"
             android:layout_gravity="center"
-            android:src="@drawable/compass"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-    />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-</LinearLayout>
+</FrameLayout>

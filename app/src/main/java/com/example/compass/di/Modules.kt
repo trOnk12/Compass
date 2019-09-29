@@ -1,17 +1,30 @@
-package com.example.compass
+package com.example.compass.di
 
 import android.content.Context
 import android.content.Context.SENSOR_SERVICE
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import android.location.LocationManager
+import com.example.compass.service.CompassService
+import com.example.compass.service.LocationService
+import com.example.compass.ui.main.MainActivityViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    viewModel { MainActivityViewModel(get()) }
+    viewModel { MainActivityViewModel(get(), get()) }
 
+}
+
+val locationServiceModule = module {
+    fun provideLocationManager(context: Context): LocationManager {
+        return context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
+
+    single{provideLocationManager(get())}
+    single{LocationService(get())}
 }
 
 val sensorServiceModule = module {
@@ -29,9 +42,16 @@ val sensorServiceModule = module {
     }
 
     single { provideSensorManager(get()) }
+
     single(named("accelerometer")) { provideAccelerometerSensor(get()) }
     single(named("magnetometer")) { provideMagnetometerSensor(get()) }
-    single { CompassService(get(), get(named("accelerometer")), get(named("magnetometer"))) }
+    single {
+        CompassService(
+            get(),
+            get(named("accelerometer")),
+            get(named("magnetometer"))
+        )
+    }
 
 
 }
