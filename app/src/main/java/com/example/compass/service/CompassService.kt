@@ -15,12 +15,17 @@ class CompassService(sensorManager: SensorManager, accelerometerSensor: Sensor, 
         sensorManager.registerListener(this, magnetometerSensor, SensorManager.SENSOR_DELAY_UI)
     }
 
-    var dataBus: PublishSubject<HashMap<SensorData.SensorDataType, SensorData>> = PublishSubject.create()
-    var dataMap: HashMap<SensorData.SensorDataType, SensorData> = HashMap()
+    lateinit var onCompassServiceDataListener: OnCompassServiceDataListener
 
-    fun getSensorDataBus(): PublishSubject<HashMap<SensorData.SensorDataType, SensorData>> {
-        return dataBus
+    interface OnCompassServiceDataListener {
+        fun onCompassServiceData(data: HashMap<SensorData.SensorDataType, SensorData>)
     }
+
+    fun registerDataListener(listener: OnCompassServiceDataListener) {
+        onCompassServiceDataListener = listener
+    }
+
+    var dataMap: HashMap<SensorData.SensorDataType, SensorData> = HashMap()
 
     override fun onSensorChanged(p0: SensorEvent?) {
         p0?.let { sensorEvent ->
@@ -41,7 +46,7 @@ class CompassService(sensorManager: SensorManager, accelerometerSensor: Sensor, 
         dataMap[key] = data
 
         if (dataMap[SensorData.SensorDataType.ACCELEROMETER] != null && dataMap[SensorData.SensorDataType.MAGNETOMETER] != null) {
-            dataBus.onNext(dataMap)
+            onCompassServiceDataListener.onCompassServiceData(dataMap)
         }
 
     }

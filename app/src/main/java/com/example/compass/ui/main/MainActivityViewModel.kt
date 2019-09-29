@@ -3,19 +3,21 @@ package com.example.compass.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.compass.BaseDisposableViewModel
-import com.example.compass.model.Compass
+import com.example.compass.utills.CompassDataExtractor
 import com.example.compass.model.LatLng
 import com.example.compass.model.SensorData
 import com.example.compass.service.CompassService
 import com.example.compass.service.LocationService
+import com.example.compass.usecase.GetAzimuthUseCase
+import com.example.compass.usecase.GetLocationUseCase
 import com.example.compass.utills.LowPassFilterStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class MainActivityViewModel(var compassService: CompassService, var locationService: LocationService) :
+class MainActivityViewModel(var getAzimuthUseCase: GetAzimuthUseCase, var getLocationUseCase: GetLocationUseCase, var compassService: CompassService, var locationService: LocationService) :
     BaseDisposableViewModel() {
 
-    var compassModel: Compass = Compass(LowPassFilterStrategy())
+    var compassDataExtractorModel: CompassDataExtractor = CompassDataExtractor(LowPassFilterStrategy())
 
     private val _azimuthDegree: MutableLiveData<Double> = MutableLiveData()
     val azimuthDegree: LiveData<Double> = _azimuthDegree
@@ -36,7 +38,7 @@ class MainActivityViewModel(var compassService: CompassService, var locationServ
 
     fun drawDirectionIndicator(destinationLatLng: LatLng) {
         val currentLocation = LatLng(51.50, 0.00)
-        val azimuthInDegrees = compassModel.calculateDestinationAzimuth(currentLocation, destinationLatLng)
+        val azimuthInDegrees = compassDataExtractorModel.calculateDestinationAzimuth(currentLocation, destinationLatLng)
 
         _indicatorAzimuth.value = azimuthInDegrees
     }
@@ -48,7 +50,7 @@ class MainActivityViewModel(var compassService: CompassService, var locationServ
 
             accelerometerValues?.let {
                 magnetometerValues?.let {
-                    _azimuthDegree.value = compassModel.calculateAzimuthInDegrees(
+                    _azimuthDegree.value = compassDataExtractorModel.calculateAzimuthInDegrees(
                         accelerometerValues.sensorEvent.values,
                         magnetometerValues.sensorEvent.values
                     )
