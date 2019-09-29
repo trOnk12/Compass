@@ -23,13 +23,13 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.drawDirectionIndicator(LatLng(-22.97, -43.18))
-        viewModel.indicatorAzimuth.observe(this, Observer { it ->
-            it?.let {
-                compass.drawIndicator(it)
-                compass.rotateNeedle(it.toFloat())
-            }
-        })
+//        viewModel.drawDirectionIndicator(LatLng(-22.97, -43.18))
+//        viewModel.indicatorAzimuth.observe(this, Observer { it ->
+//            it?.let {
+//                compass.drawIndicator(it)
+//                compass.rotateNeedle(it.toFloat())
+//            }
+//        })
 
     }
 

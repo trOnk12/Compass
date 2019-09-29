@@ -1,10 +1,11 @@
 package com.example.compass.source
 
-import android.annotation.SuppressLint
+import com.example.compass.model.Compass
 import com.example.compass.model.CompassPhysics
 import com.example.compass.model.SensorData
 import com.example.compass.service.CompassService
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.example.compass.utills.LowPassFilterStrategy
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 class CompassServiceSource(
@@ -19,18 +20,23 @@ class CompassServiceSource(
         dataBus.onNext(data)
     }
 
-    @SuppressLint("CheckResult")
-    fun getCompass() {
-//        val test = dataBus.map { dataMap ->
-//            val acceleroMeterValues = dataMap[SensorData.SensorDataType.ACCELEROMETER]
-//                ?.sensorEvent
-//                ?.values
-//
-//            val magnetoMeterValues = dataMap[SensorData.SensorDataType.ACCELEROMETER]?.sensorEvent?.values
-//
-//            val compassPhysics = acceleroMeterValues?.let { magnetoMeterValues?.let { it1 -> CompassPhysics(it, it1) } }
-//        }
-//
+    fun getCompass(): Observable<Compass> {
+        return dataBus.map { getCompass(it) }
+    }
+
+    private fun getCompass(data: HashMap<SensorData.SensorDataType, SensorData>): Compass {
+
+        val compassPhysics = with(data) {
+            get(SensorData.SensorDataType.ACCELEROMETER)?.sensorEvent?.values?.let { accelerateMeter ->
+                get(SensorData.SensorDataType.MAGNETOMETER)?.sensorEvent?.values?.let { magnetoMeter ->
+                    CompassPhysics(accelerateMeter, magnetoMeter)
+                }
+            }
+        }
+
+        val azimuth =  compassPhysics?.calculateAzimuthInDegrees(LowPassFilterStrategy())?.toInt()
+
+        return Compass(azimuth = azimuth)
     }
 
 }

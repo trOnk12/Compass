@@ -5,16 +5,35 @@ import android.content.Context.SENSOR_SERVICE
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.location.LocationManager
+import com.example.compass.model.SensorData
 import com.example.compass.service.CompassService
 import com.example.compass.service.LocationService
+import com.example.compass.source.CompassServiceSource
 import com.example.compass.ui.main.MainActivityViewModel
+import com.example.compass.usecase.GetAzimuthUseCase
+import com.example.compass.usecase.GetLocationUseCase
+import io.reactivex.subjects.PublishSubject
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val viewModelModule = module {
-
     viewModel { MainActivityViewModel(get(), get()) }
+}
+
+val useCaseModule = module {
+    single { GetLocationUseCase() }
+    single { GetAzimuthUseCase(get()) }
+}
+
+val sourcesModule = module {
+
+    fun providePublishSubject(): PublishSubject<HashMap<SensorData.SensorDataType, SensorData>> {
+        return PublishSubject.create()
+    }
+
+    single { providePublishSubject() }
+    single { CompassServiceSource(get(), get()) }
 
 }
 
@@ -23,8 +42,8 @@ val locationServiceModule = module {
         return context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
 
-    single{provideLocationManager(get())}
-    single{LocationService(get())}
+    single { provideLocationManager(get()) }
+    single { LocationService(get()) }
 }
 
 val sensorServiceModule = module {
