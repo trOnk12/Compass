@@ -23,4 +23,6 @@ class CompassPhysics(var acceleratorMeterValues: FloatArray, var magnetoMeterVal
         return signalSmoothingStrategy.compute(orientationValues[0])
     }
 
+
+
 }

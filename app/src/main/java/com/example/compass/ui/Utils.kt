@@ -20,3 +20,4 @@ fun calculateCircumreference(width: Int, height: Int, radius: Int, degree: Doubl
 
     return arrayOf(x, y)
 }
+

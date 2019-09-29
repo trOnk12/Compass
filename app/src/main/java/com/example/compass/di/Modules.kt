@@ -6,12 +6,13 @@ import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.location.LocationManager
 import com.example.compass.model.SensorData
-import com.example.compass.service.CompassService
-import com.example.compass.service.LocationService
-import com.example.compass.source.CompassServiceSource
+import com.example.compass.data.service.CompassService
+import com.example.compass.data.service.LocationService
+import com.example.compass.data.source.CompassServiceSource
+import com.example.compass.data.source.LocationServiceSource
 import com.example.compass.ui.main.MainActivityViewModel
-import com.example.compass.usecase.GetAzimuthUseCase
-import com.example.compass.usecase.GetLocationUseCase
+import com.example.compass.data.usecase.GetCompassAzimuthUseCase
+import com.example.compass.data.usecase.GetLocationAzimuthUseCase
 import io.reactivex.subjects.PublishSubject
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -22,8 +23,8 @@ val viewModelModule = module {
 }
 
 val useCaseModule = module {
-    single { GetLocationUseCase() }
-    single { GetAzimuthUseCase(get()) }
+    single { GetLocationAzimuthUseCase(get()) }
+    single { GetCompassAzimuthUseCase(get()) }
 }
 
 val sourcesModule = module {
@@ -34,6 +35,7 @@ val sourcesModule = module {
 
     single { providePublishSubject() }
     single { CompassServiceSource(get(), get()) }
+    single { LocationServiceSource(get(), get()) }
 
 }
 
@@ -43,7 +45,7 @@ val locationServiceModule = module {
     }
 
     single { provideLocationManager(get()) }
-    single { LocationService(get()) }
+    single { LocationService(get(),get()) }
 }
 
 val sensorServiceModule = module {

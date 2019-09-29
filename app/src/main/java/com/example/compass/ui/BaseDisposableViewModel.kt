@@ -1,4 +1,4 @@
-package com.example.compass
+package com.example.compass.ui
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable

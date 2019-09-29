@@ -10,7 +10,7 @@ public class CompassView extends FrameLayout {
     private CompassNeedleView compassNeedleView;
     private CompassPlateView compassPlateView;
 
-    private Float currentCompassRotation = 0f;
+    private Integer currentCompassRotation = 0;
 
     public CompassView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -19,8 +19,8 @@ public class CompassView extends FrameLayout {
         compassPlateView = findViewById(R.id.compass_plate_view);
     }
 
-    public void rotateCompass(Float degree) {
-        Float rotationDelta = currentCompassRotation - degree;
+    public void rotateCompass(Integer degree) {
+        Integer rotationDelta = currentCompassRotation - degree;
         setRotation(-(currentCompassRotation+rotationDelta));
         currentCompassRotation = degree;
     }

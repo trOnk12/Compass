@@ -1,11 +1,10 @@
-package com.example.compass.service
+package com.example.compass.data.service
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.example.compass.model.SensorData
-import io.reactivex.subjects.PublishSubject
 import kotlin.collections.HashMap
 
 class CompassService(sensorManager: SensorManager, accelerometerSensor: Sensor, magnetometerSensor: Sensor) :
