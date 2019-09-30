@@ -8,36 +8,31 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import com.example.compass.model.LocationResult
 
 class LocationService(var context: Context, var locationManager: LocationManager) : LocationListener {
 
-    interface OnPermissionStatusListener {
-        fun onPermissionStatus()
+    interface OnLocationDataListener {
+        fun onLocationData(locationResult: LocationResult)
     }
 
-    interface OnLocationUpdateListener {
-        fun onLocationUpdate(location: Location?)
-    }
+    lateinit var onLocationDataListener: OnLocationDataListener
 
-    lateinit var onPermissionStatusListener: OnPermissionStatusListener
-    lateinit var onLocationUpdateListener: OnLocationUpdateListener
-
-
-
-    fun requestLocation(){
+    fun requestLocation() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            onPermissionStatusListener.onPermissionStatus()
-        }
-        else{
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, this)
+            onLocationDataListener.onLocationData(LocationResult.Failure("TEST"))
+        } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 10f, this)
         }
     }
 
-
     override fun onLocationChanged(p0: Location?) {
-        onLocationUpdateListener.onLocationUpdate(p0)
+        p0?.let{
+            onLocationDataListener.onLocationData(LocationResult.Success(it))
+        }
+
     }
 
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {

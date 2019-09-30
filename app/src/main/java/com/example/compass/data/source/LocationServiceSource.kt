@@ -3,38 +3,44 @@ package com.example.compass.data.source
 import android.location.Location
 import com.example.compass.data.service.LocationService
 import com.example.compass.model.LatLng
-import com.example.compass.model.LocationAzimuthResult
+import com.example.compass.model.LocationResult
 import com.example.compass.utills.LocationDataExtractor
-import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 class LocationServiceSource(
-    private var dataBus: PublishSubject<LocationAzimuthResult>,
-    locationService: LocationService
+    private var dataBus: PublishSubject<LocationResult>,
+    var locationService: LocationService
 ) :
-    LocationService.OnPermissionStatusListener, LocationService.OnLocationUpdateListener {
+    LocationService.OnLocationDataListener {
     init {
-        locationService.onPermissionStatusListener = this
-        locationService.onLocationUpdateListener = this
-
-        locationService.requestLocation()
+        locationService.onLocationDataListener = this
     }
 
-    private lateinit var destinationLatLng: LatLng
+    lateinit var locationResult: LocationResult
+
+    override fun onLocationData(locationResult: LocationResult) {
+
+    }
 
     override fun onLocationUpdate(location: Location?) {
         location?.let {
+
+        }
+        location?.let {
             val locationAzimuth =
                 LocationDataExtractor.calculateDestinationAzimuth(destinationLatLng, LatLng(it.latitude, it.longitude))
-            dataBus.onNext(LocationAzimuthResult.Success(it))
+            dataBus.onNext(LocationResult.Success(locationAzimuth))
         }
     }
 
     override fun onPermissionStatus() {
-        dataBus.onNext(LocationAzimuthResult.Failure("TEST"))
+        dataBus.onNext(LocationResult.Failure("TEST"))
     }
 
-    fun getLocationAzimuthBus(): PublishSubject<LocationAzimuthResult> {
+    fun getLocationAzimuth(destinationLatLng: LatLng): PublishSubject<LocationResult> {
+        this.destinationLatLng = destinationLatLng
+
+
         return dataBus
     }
 

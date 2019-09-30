@@ -2,13 +2,13 @@ package com.example.compass.data.usecase
 
 import com.example.compass.data.source.LocationServiceSource
 import com.example.compass.model.LatLng
-import com.example.compass.model.LocationAzimuthResult
+import com.example.compass.model.LocationResult
 import io.reactivex.subjects.PublishSubject
 
 class GetLocationAzimuthUseCase(var locationServiceSource: LocationServiceSource) {
 
-    fun getAzimuth(latLng: LatLng): PublishSubject<LocationAzimuthResult> {
-        return locationServiceSource.getLocationAzimuthBus()
+    fun getAzimuth(destinationLatLng: LatLng): PublishSubject<LocationResult> {
+        return locationServiceSource.getLocationAzimuth(destinationLatLng)
     }
 
 }

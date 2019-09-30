@@ -29,13 +29,18 @@ val useCaseModule = module {
 
 val sourcesModule = module {
 
-    fun providePublishSubject(): PublishSubject<HashMap<SensorData.SensorDataType, SensorData>> {
+    fun provideSensorPublishSubject(): PublishSubject<HashMap<SensorData.SensorDataType, SensorData>> {
         return PublishSubject.create()
     }
 
-    single { providePublishSubject() }
-    single { CompassServiceSource(get(), get()) }
-    single { LocationServiceSource(get(), get()) }
+    fun provideLocationPublishSubject(): PublishSubject<Double> {
+        return PublishSubject.create()
+    }
+
+    single(named("sensorBus")) { provideSensorPublishSubject() }
+    single(named("locationBus")) { provideLocationPublishSubject() }
+    single { CompassServiceSource(get(named("sensorBus")), get()) }
+    single { LocationServiceSource(get(named("locationBus")), get()) }
 
 }
 
@@ -45,7 +50,7 @@ val locationServiceModule = module {
     }
 
     single { provideLocationManager(get()) }
-    single { LocationService(get(),get()) }
+    single { LocationService(get(), get()) }
 }
 
 val sensorServiceModule = module {

@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.indicatorAzimuth.observe(this, Observer {
-            Log.d("TEST", "indicatorAzimuth$it")
+           // compass.drawIndicator(it)
+            compass.rotateNeedle(it.toFloat())
         })
 
         viewModel.requestPermission.observe(this, Observer {
