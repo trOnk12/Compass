@@ -3,16 +3,13 @@ package com.example.compass.ui.main
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.compass.BaseActivity
-import com.example.compass.PERMISSIONS_REQUEST_FINE_COARSE
+import com.example.compass.utills.PERMISSIONS_REQUEST_FINE_COARSE
 import com.example.compass.R
 import com.example.compass.databinding.ActivityMainBinding
-import com.example.compass.model.LocationResult
 import com.example.compass.model.PermissionStatusError
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel

@@ -7,11 +7,6 @@ fun fromDpToPx(dp: Int): Int {
     return (dp * scale + 0.5f).toInt()
 }
 
-fun formPxToDp(pixels: Int): Float {
-    val scale = Resources.getSystem().displayMetrics.density
-    return pixels / scale + 0.5f.toInt()
-}
-
 fun calculateCircumreference(width: Int, height: Int, radius: Int, degree: Double): Array<Double> {
     val radians = Math.toRadians(degree)
 

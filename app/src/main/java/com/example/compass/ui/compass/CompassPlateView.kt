@@ -9,7 +9,6 @@ import com.example.compass.R
 import com.example.compass.ui.calculateCircumreference
 import com.example.compass.ui.fromDpToPx
 
-
 class CompassPlateView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private var drawIndicator = false

@@ -7,12 +7,21 @@ class CompassPhysics(var acceleratorMeterValues: FloatArray, var magnetoMeterVal
 
     fun calculateAzimuthInDegrees(signalSmoothingStrategy: SignalSmoothingStrategy): Double {
 
+        var smoothedAcceleratorMeterValues = FloatArray(acceleratorMeterValues.size)
+        smoothedAcceleratorMeterValues =
+            signalSmoothingStrategy.compute(acceleratorMeterValues, smoothedAcceleratorMeterValues)
+
+
+        var smoothedMagnetoMeterValues = FloatArray(magnetoMeterValues.size)
+        smoothedMagnetoMeterValues =
+            signalSmoothingStrategy.compute(magnetoMeterValues, smoothedMagnetoMeterValues)
+
         val rotationMatrix = FloatArray(9).apply {
             SensorManager.getRotationMatrix(
                 this,
                 null,
-                acceleratorMeterValues,
-                magnetoMeterValues
+                smoothedAcceleratorMeterValues,
+                smoothedMagnetoMeterValues
             )
         }
 
@@ -20,9 +29,8 @@ class CompassPhysics(var acceleratorMeterValues: FloatArray, var magnetoMeterVal
             SensorManager.getOrientation(rotationMatrix, this)
         }
 
-        return signalSmoothingStrategy.compute(orientationValues[0])
+        return (((orientationValues[0]*180)/Math.PI))
     }
-
 
 
 }

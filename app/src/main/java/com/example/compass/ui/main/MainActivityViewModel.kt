@@ -2,13 +2,11 @@ package com.example.compass.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.compass.ui.BaseDisposableViewModel
 import com.example.compass.data.usecase.GetCompassAzimuthUseCase
 import com.example.compass.data.usecase.GetLocationAzimuthUseCase
 import com.example.compass.model.AzimuthResult
-import com.example.compass.entity.Compass
-import com.example.compass.model.LocationResult
 import com.example.compass.model.PermissionStatusError
+import com.example.compass.ui.BaseDisposableViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
