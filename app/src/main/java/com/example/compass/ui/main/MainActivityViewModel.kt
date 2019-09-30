@@ -18,8 +18,8 @@ class MainActivityViewModel(
 ) :
     BaseDisposableViewModel() {
 
-    private val _azimuthDegree: MutableLiveData<Int> = MutableLiveData()
-    val azimuthDegree: LiveData<Int> = _azimuthDegree
+    private val _azimuthDegree: MutableLiveData<Double> = MutableLiveData()
+    val azimuthDegree: LiveData<Double> = _azimuthDegree
 
     private val _indicatorAzimuth: MutableLiveData<Double> = MutableLiveData()
     val indicatorAzimuth: LiveData<Double> = _indicatorAzimuth
@@ -52,7 +52,7 @@ class MainActivityViewModel(
         _requestPermission.value = PermissionStatusError.GRANTED
     }
 
-    private fun getLocationAzimuth(latitude: Double, longitude: Double) {
+     fun getLocationAzimuth(latitude: Double, longitude: Double) {
         handleLocationAzimuthData(getLocationAzimuthUseCase.getAzimuth(latitude, longitude))
     }
 
@@ -62,6 +62,7 @@ class MainActivityViewModel(
             is AzimuthResult.Failure -> _requestPermission.value = azimuthResult.message
         }
     }
+
 
 
 }

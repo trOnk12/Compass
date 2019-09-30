@@ -36,7 +36,7 @@ class LowPassFilterStrategy : SignalSmoothingStrategy {
 
         queue.add(radians)
 
-        val length = 10
+        val length = 15
 
         if (queue.size > length) {
             val old = queue.poll()!!

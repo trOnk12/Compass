@@ -1,3 +1,3 @@
 package com.example.compass.entity
 
-data class Compass(var azimuth: Int? = 0)
+data class Compass(var azimuth: Double? = 0.00)

@@ -31,7 +31,7 @@ class CompassServiceSource(
             }
         }
 
-        val azimuth = compassPhysics?.calculateAzimuthInDegrees(LowPassFilterStrategy())?.toInt()
+        val azimuth = compassPhysics?.calculateAzimuthInDegrees(LowPassFilterStrategy())
 
         return Compass(azimuth = azimuth)
     }
