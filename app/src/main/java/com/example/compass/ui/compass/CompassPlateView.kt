@@ -144,6 +144,7 @@ class CompassPlateView(context: Context, attrs: AttributeSet) : View(context, at
     fun drawLatLngIndicator(degree: Double) {
         drawIndicator = true
         indicatorDegree = degree - 90
+        invalidate()
     }
 
     private fun Drawable.setBoundsInCenter(radiusInDp: Int) {

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.azimuthDegree.observe(this, Observer {
             it?.let { azimuth ->
-                compass.rotateCompass(azimuth)
+            //    compass.rotateCompass(azimuth)
             }
         })
 
@@ -37,13 +37,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.indicatorAzimuth.observe(this, Observer {
-           // compass.drawIndicator(it)
+            compass.drawIndicator(it)
             compass.rotateNeedle(it.toFloat())
         })
 
         viewModel.requestPermission.observe(this, Observer {
-            if (it) {
-                Log.d("TEST", "request permission")
+            it?.let{
+                if (it) {
+                    Log.d("TEST", "request permission")
+                }
             }
         })
 

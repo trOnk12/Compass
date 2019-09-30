@@ -34,7 +34,7 @@
                     android:inputType="numberDecimal"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:text="@={model.longitude}"
+                    android:text="@={model._longitude}"
                     android:layout_height="wrap_content"
                     android:hint="Latitude"
                     android:textAlignment="center"/>
@@ -42,7 +42,7 @@
             <EditText
                     android:inputType="numberDecimal"
                     android:layout_weight="1"
-                    android:text="@={model.latitude}"
+                    android:text="@={model._latitude}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="Longitude"

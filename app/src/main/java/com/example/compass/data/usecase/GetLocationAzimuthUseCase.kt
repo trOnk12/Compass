@@ -7,7 +7,7 @@ import io.reactivex.subjects.PublishSubject
 
 class GetLocationAzimuthUseCase(var locationServiceSource: LocationServiceSource) {
 
-    fun getAzimuth(destinationLatLng: LatLng): PublishSubject<LocationResult> {
+    fun getAzimuth(destinationLatLng: LatLng): LocationResult {
         return locationServiceSource.getLocationAzimuth(destinationLatLng)
     }
 

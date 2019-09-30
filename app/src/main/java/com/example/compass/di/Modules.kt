@@ -33,12 +33,7 @@ val sourcesModule = module {
         return PublishSubject.create()
     }
 
-    fun provideLocationPublishSubject(): PublishSubject<Double> {
-        return PublishSubject.create()
-    }
-
     single(named("sensorBus")) { provideSensorPublishSubject() }
-    single(named("locationBus")) { provideLocationPublishSubject() }
     single { CompassServiceSource(get(named("sensorBus")), get()) }
     single { LocationServiceSource(get()) }
 

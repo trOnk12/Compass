@@ -22,14 +22,14 @@ class LocationService(var context: Context, var locationManager: LocationManager
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            onLocationDataListener.onLocationData(LocationResult.Failure("TEST"))
+            onLocationDataListener.onLocationData(LocationResult.Failure(LocationResult.PermissionStatusError.NOT_GRANTED))
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 10f, this)
         }
     }
 
     override fun onLocationChanged(p0: Location?) {
-        p0?.let{
+        p0?.let {
             onLocationDataListener.onLocationData(LocationResult.Success(it))
         }
 
@@ -45,14 +45,6 @@ class LocationService(var context: Context, var locationManager: LocationManager
 
     override fun onProviderDisabled(p0: String?) {
 
-    }
-
-    fun getLastKnownLatLng(): Array<Double> {
-
-        val longitude = 45.00
-        val latitude = 23.00
-
-        return arrayOf(longitude, latitude)
     }
 
 }

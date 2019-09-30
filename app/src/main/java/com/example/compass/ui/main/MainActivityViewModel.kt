@@ -25,8 +25,10 @@ class MainActivityViewModel(
     private val _requestPermission: MutableLiveData<Boolean> = MutableLiveData()
     val requestPermission: LiveData<Boolean> = _requestPermission
 
-    val latitude: MutableLiveData<String> = MutableLiveData()
-    val longitude: MutableLiveData<String> = MutableLiveData()
+    val _latitude: MutableLiveData<String> = MutableLiveData()
+    val latitude: LiveData<String> = _latitude
+    val _longitude: MutableLiveData<String> = MutableLiveData()
+    val longitude: LiveData<String> = _longitude
 
     fun startCompass() {
         compositeDisposable.add(
@@ -40,28 +42,15 @@ class MainActivityViewModel(
     }
 
     fun getIndicatorAzimuth() {
-        val _latitude = latitude.value
-        val _longitude = longitude.value
-
-        _latitude?.let { latitude ->
-            _longitude?.let { longitude ->
-                getLocationAzimuthUseCase.getAzimuth(
-                    LatLng(
-                        latitude = latitude.toDouble(),
-                        longitude = longitude.toDouble()
-                    )
-                )
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe { data ->
-                        when (data) {
-                            is LocationResult.Success -> _indicatorAzimuth.value = data.value
-                            is LocationResult.Failure -> _requestPermission.value = true
-                        }
-                    }
+        latitude.value?.let { latitude ->
+            longitude.value?.let { longitude ->
+                when (val data =
+                    getLocationAzimuthUseCase.getAzimuth(LatLng(latitude.toDouble(), longitude.toDouble()))) {
+                    is LocationResult.Azimuth -> _indicatorAzimuth.value = data.value
+                    is LocationResult.Failure -> _requestPermission.value = true
+                }
             }
         }
-
     }
 
 }
