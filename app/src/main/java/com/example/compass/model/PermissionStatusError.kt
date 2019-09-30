@@ -1,4 +1,6 @@
 package com.example.compass.model
 
-
-enum class PermissionStatusError { NOT_GRANTED }
+enum class PermissionStatusError {
+    NOT_GRANTED,
+    GRANTED
+}

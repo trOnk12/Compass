@@ -4,4 +4,5 @@
     <string name="latitude">Latitude</string>
     <string name="navigate">NAVIGATE</string>
     <string name="permision_not_granted_information">You will not be able to navigate to location.</string>
+    <string name="permission_granted_information">Location permission granted, ready to go ! :)</string>
 </resources>

@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.compass.data.usecase.GetCompassAzimuthUseCase
 import com.example.compass.data.usecase.GetLocationAzimuthUseCase
-import com.example.compass.model.Compass
+import com.example.compass.entity.Compass
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before
 import org.junit.Rule

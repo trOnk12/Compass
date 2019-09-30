@@ -1,3 +1,3 @@
-package com.example.compass.model
+package com.example.compass.entity
 
 data class Compass(var azimuth: Int? = 0)

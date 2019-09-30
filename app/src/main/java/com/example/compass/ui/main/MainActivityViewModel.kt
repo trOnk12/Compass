@@ -6,8 +6,9 @@ import com.example.compass.ui.BaseDisposableViewModel
 import com.example.compass.data.usecase.GetCompassAzimuthUseCase
 import com.example.compass.data.usecase.GetLocationAzimuthUseCase
 import com.example.compass.model.AzimuthResult
-import com.example.compass.model.Compass
+import com.example.compass.entity.Compass
 import com.example.compass.model.LocationResult
+import com.example.compass.model.PermissionStatusError
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -17,14 +18,14 @@ class MainActivityViewModel(
 ) :
     BaseDisposableViewModel() {
 
-    private val _azimuthDegree: MutableLiveData<Compass> = MutableLiveData()
-    val azimuthDegree: LiveData<Compass> = _azimuthDegree
+    private val _azimuthDegree: MutableLiveData<Int> = MutableLiveData()
+    val azimuthDegree: LiveData<Int> = _azimuthDegree
 
     private val _indicatorAzimuth: MutableLiveData<Double> = MutableLiveData()
     val indicatorAzimuth: LiveData<Double> = _indicatorAzimuth
 
-    private val _requestPermission: MutableLiveData<LocationResult.PermissionStatusError> = MutableLiveData()
-    val requestPermission: LiveData<LocationResult.PermissionStatusError> = _requestPermission
+    private val _requestPermission: MutableLiveData<PermissionStatusError> = MutableLiveData()
+    val requestPermission: LiveData<PermissionStatusError> = _requestPermission
 
     val latitude: MutableLiveData<String> = MutableLiveData()
     val longitude: MutableLiveData<String> = MutableLiveData()
@@ -35,25 +36,20 @@ class MainActivityViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe { data ->
-                    _azimuthDegree.value = data
+                    _azimuthDegree.value = data.azimuth
                 })
     }
 
     fun onNavigateButtonClicked() {
-        requestLocationAzimuth()
-    }
-
-    fun permissionGranted() {
-        _requestPermission.value = LocationResult.PermissionStatusError.GRANTED
-        requestLocationAzimuth()
-    }
-
-    private fun requestLocationAzimuth() {
         latitude.value?.let { latitude ->
             longitude.value?.let { longitude ->
                 getLocationAzimuth(latitude.toDouble(), longitude.toDouble())
             }
         }
+    }
+
+    fun permissionGranted() {
+        _requestPermission.value = PermissionStatusError.GRANTED
     }
 
     private fun getLocationAzimuth(latitude: Double, longitude: Double) {
@@ -66,7 +62,6 @@ class MainActivityViewModel(
             is AzimuthResult.Failure -> _requestPermission.value = azimuthResult.message
         }
     }
-
 
 
 }

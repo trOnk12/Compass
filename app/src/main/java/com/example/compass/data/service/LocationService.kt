@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.example.compass.model.LocationResult
+import com.example.compass.model.PermissionStatusError
 
 class LocationService(var context: Context, var locationManager: LocationManager) : LocationListener {
 
@@ -18,7 +19,7 @@ class LocationService(var context: Context, var locationManager: LocationManager
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            locationResult = LocationResult.Failure(LocationResult.PermissionStatusError.NOT_GRANTED)
+            locationResult = LocationResult.Failure(PermissionStatusError.NOT_GRANTED)
         } else {
             locationResult = LocationResult.Location(
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER))
@@ -34,19 +35,14 @@ class LocationService(var context: Context, var locationManager: LocationManager
         }
     }
 
-    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-
-    }
-
-    override fun onProviderEnabled(p0: String?) {
-
-    }
-
-    override fun onProviderDisabled(p0: String?) {
-
-    }
+    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
+    override fun onProviderEnabled(p0: String?) {}
+    override fun onProviderDisabled(p0: String?) {}
 
     fun getLocationResult(): LocationResult {
+        if(locationResult is LocationResult.Failure){
+            requestLocation()
+        }
         return locationResult
     }
 

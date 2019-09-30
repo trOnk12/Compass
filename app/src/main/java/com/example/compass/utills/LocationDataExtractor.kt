@@ -1,8 +1,6 @@
 package com.example.compass.utills
 
-import android.hardware.SensorManager
-import com.example.compass.model.CompassPhysics
-import com.example.compass.model.LatLng
+import com.example.compass.entity.LatLng
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin

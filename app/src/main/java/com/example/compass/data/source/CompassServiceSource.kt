@@ -1,11 +1,10 @@
 package com.example.compass.data.source
 
-import com.example.compass.model.Compass
+import com.example.compass.entity.Compass
 import com.example.compass.model.CompassPhysics
 import com.example.compass.model.SensorData
 import com.example.compass.data.service.CompassService
 import com.example.compass.utills.LowPassFilterStrategy
-import com.example.compass.utills.MovingAverageStrategy
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
