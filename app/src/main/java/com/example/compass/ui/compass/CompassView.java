@@ -7,13 +7,14 @@ import com.example.compass.R;
 
 public class CompassView extends FrameLayout {
 
+    private Integer currentCompassRotation = 0;
+
     private CompassNeedleView compassNeedleView;
     private CompassPlateView compassPlateView;
 
-    private Integer currentCompassRotation = 0;
-
     public CompassView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
         inflate(context, R.layout.compass_view, this);
         compassNeedleView = findViewById(R.id.compass_needle_view);
         compassPlateView = findViewById(R.id.compass_plate_view);
@@ -21,16 +22,13 @@ public class CompassView extends FrameLayout {
 
     public void rotateCompass(Integer degree) {
         Integer rotationDelta = currentCompassRotation - degree;
-        setRotation(-(currentCompassRotation+rotationDelta));
+        setRotation(-(currentCompassRotation + rotationDelta));
         currentCompassRotation = degree;
     }
 
-    public void rotateNeedle(Float degree) {
-        compassNeedleView.rotateNeedle(degree);
-    }
-
-    public void drawIndicator(Double degree) {
-        compassPlateView.drawLatLngIndicator(degree);
+    public void showAzimuthDirection(double azimuth) {
+        compassNeedleView.rotateNeedle((float) azimuth);
+        compassPlateView.drawLatLngIndicator(azimuth);
     }
 
 }

@@ -21,12 +21,9 @@ class CompassServiceSource(
         dataBus.onNext(data)
     }
 
-    fun getCompass(): Observable<Compass> {
-        return dataBus.map { getCompass(it) }
-    }
+    fun getCompass(): Observable<Compass> = dataBus.map { getCompass(it) }
 
     private fun getCompass(data: HashMap<SensorData.SensorDataType, SensorData>): Compass {
-
         val compassPhysics = with(data) {
             get(SensorData.SensorDataType.ACCELEROMETER)?.sensorEvent?.values?.let { accelerateMeter ->
                 get(SensorData.SensorDataType.MAGNETOMETER)?.sensorEvent?.values?.let { magnetoMeter ->

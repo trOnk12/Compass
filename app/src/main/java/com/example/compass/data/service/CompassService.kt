@@ -10,8 +10,8 @@ import kotlin.collections.HashMap
 class CompassService(sensorManager: SensorManager, accelerometerSensor: Sensor, magnetometerSensor: Sensor) :
     SensorEventListener {
     init {
-        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
-        sensorManager.registerListener(this, magnetometerSensor, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(this, magnetometerSensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     lateinit var onCompassServiceDataListener: OnCompassServiceDataListener

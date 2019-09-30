@@ -12,27 +12,26 @@ import com.example.compass.model.LocationResult
 
 class LocationService(var context: Context, var locationManager: LocationManager) : LocationListener {
 
-    interface OnLocationDataListener {
-        fun onLocationData(locationResult: LocationResult)
-    }
-
-    lateinit var onLocationDataListener: OnLocationDataListener
+    private lateinit var locationResult: LocationResult
 
     fun requestLocation() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            onLocationDataListener.onLocationData(LocationResult.Failure(LocationResult.PermissionStatusError.NOT_GRANTED))
+            locationResult = LocationResult.Failure(LocationResult.PermissionStatusError.NOT_GRANTED)
         } else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 10f, this)
+            locationResult = LocationResult.Location(
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER))
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, 100, 10f, this
+            )
         }
     }
 
     override fun onLocationChanged(p0: Location?) {
         p0?.let {
-            onLocationDataListener.onLocationData(LocationResult.Success(it))
+            locationResult = LocationResult.Location(it)
         }
-
     }
 
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
@@ -45,6 +44,10 @@ class LocationService(var context: Context, var locationManager: LocationManager
 
     override fun onProviderDisabled(p0: String?) {
 
+    }
+
+    fun getLocationResult(): LocationResult {
+        return locationResult
     }
 
 }

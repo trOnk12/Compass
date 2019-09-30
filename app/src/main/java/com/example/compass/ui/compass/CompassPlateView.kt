@@ -23,7 +23,14 @@ class CompassPlateView(context: Context, attrs: AttributeSet) : View(context, at
     private val innerCompassRadius = 96
     private val insideCompassRadius = 64
     private val plateDegreeCircleRadius = 32
-    private val fontSize = 32f
+    private val fontSize = 38f
+
+    private val outerCompassCircle: Drawable = resources.getDrawable(R.drawable.outer_compass_circle, null)
+    private val innerCompassCircle: Drawable = resources.getDrawable(R.drawable.inner_compass_circle, null)
+    private val insideCompassCircle: Drawable = resources.getDrawable(R.drawable.inside_compass_circle, null)
+
+    private val degreeTextArray = arrayOf("0", "90", "180", "270")
+    private val directionTextArray = arrayOf("N", "E", "S", "W")
 
     private val indicatorPaint = Paint().apply {
         color = Color.WHITE
@@ -32,13 +39,9 @@ class CompassPlateView(context: Context, attrs: AttributeSet) : View(context, at
 
     private val textPaint = Paint().apply {
         color = Color.WHITE
-        strokeWidth = 0.5f
         textSize = fontSize
+        textAlign = Paint.Align.CENTER
     }
-
-    private val outerCompassCircle: Drawable = resources.getDrawable(R.drawable.outer_compass_circle, null)
-    private val innerCompassCircle: Drawable = resources.getDrawable(R.drawable.inner_compass_circle, null)
-    private val insideCompassCircle: Drawable = resources.getDrawable(R.drawable.inside_compass_circle, null)
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -57,41 +60,15 @@ class CompassPlateView(context: Context, attrs: AttributeSet) : View(context, at
             innerCompassCircle.draw(canvas)
             drawDirectionText(canvas)
             insideCompassCircle.draw(canvas)
+
             if (drawIndicator)
                 drawIndicator(canvas)
+
         }
-
-    }
-
-    private fun drawTextAroundCircle(canvas: Canvas, textArray: Array<String>, circleRadius: Int) {
-        val degreePerElement = 360.00 / 4
-
-        for (i in 0 until textArray.size) {
-
-            val pointCoordinates =
-                calculateCircumReferenceCenter(
-                    (circleRadius-fontSize/2).toInt(),
-                    degreePerElement * i - 90
-                )
-
-            canvas.drawText(
-                textArray[i],
-                pointCoordinates[0].toFloat(),
-                pointCoordinates[1].toFloat(),
-                textPaint
-            )
-        }
-
     }
 
     private fun drawDegreesText(canvas: Canvas) {
-        val degreeTextArray = arrayOf("0", "90", "180", "270")
         drawTextAroundCircle(canvas, degreeTextArray, outerCompassRadius)
-    }
-
-    private fun drawDirectionText(canvas: Canvas) {
-        val directionTextArray = arrayOf("N", "E", "S", "W")
-        drawTextAroundCircle(canvas, directionTextArray, innerCompassRadius)
     }
 
     private fun drawPlateCircles(canvas: Canvas) {
@@ -116,15 +93,25 @@ class CompassPlateView(context: Context, attrs: AttributeSet) : View(context, at
 
     }
 
-    private fun calculateCircumReferenceCenter(
-        radiusInDp: Int,
-        degree: Double
-    ): Array<Double> {
-        return calculateCircumreference(
-            displayWidthCenter, displayHeightCenter,
-            fromDpToPx(radiusInDp),
-            degree
-        )
+    private fun drawDirectionText(canvas: Canvas) {
+        drawTextAroundCircle(canvas, directionTextArray, innerCompassRadius)
+    }
+
+    private fun drawTextAroundCircle(canvas: Canvas, textArray: Array<String>, circleRadius: Int) {
+        val degreePerElement = 360.00 / textArray.size
+
+        for (i in 0 until textArray.size) {
+            val pointCoordinates =
+                calculateCircumReferenceCenter(((circleRadius - (fontSize/2)).toInt()), degreePerElement * i - 90)
+
+            canvas.drawText(
+                textArray[i],
+                pointCoordinates[0].toFloat(),
+                pointCoordinates[1].toFloat(),
+                textPaint
+            )
+        }
+
     }
 
     private fun drawIndicator(canvas: Canvas) {
@@ -145,6 +132,17 @@ class CompassPlateView(context: Context, attrs: AttributeSet) : View(context, at
         drawIndicator = true
         indicatorDegree = degree - 90
         invalidate()
+    }
+
+    private fun calculateCircumReferenceCenter(
+        radiusInDp: Int,
+        degree: Double
+    ): Array<Double> {
+        return calculateCircumreference(
+            displayWidthCenter, displayHeightCenter,
+            fromDpToPx(radiusInDp),
+            degree
+        )
     }
 
     private fun Drawable.setBoundsInCenter(radiusInDp: Int) {

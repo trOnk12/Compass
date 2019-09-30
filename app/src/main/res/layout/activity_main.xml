@@ -34,18 +34,18 @@
                     android:inputType="numberDecimal"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:text="@={model._longitude}"
+                    android:text="@={model.longitude}"
                     android:layout_height="wrap_content"
-                    android:hint="Latitude"
+                    android:hint="@string/latitude"
                     android:textAlignment="center"/>
 
             <EditText
                     android:inputType="numberDecimal"
                     android:layout_weight="1"
-                    android:text="@={model._latitude}"
+                    android:text="@={model.latitude}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Longitude"
+                    android:hint="@string/longitude"
                     android:textAlignment="center"/>
 
         </LinearLayout>
@@ -53,6 +53,7 @@
         <ImageView
                 android:background="@drawable/small_green_circle"
                 android:layout_centerHorizontal="true"
+                android:onClick="@{() -> model.onNavigateButtonClicked()}"
                 android:layout_alignBottom="@id/compass"
                 android:id="@+id/navigate_button"
                 android:layout_width="128dp"
@@ -68,7 +69,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/navigate_button"
                 app:layout_constraintBottom_toBottomOf="@id/navigate_button"
                 app:layout_constraintTop_toTopOf="@id/navigate_button"
-                android:text="NAVIGATE"
+                android:text="@string/navigate"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

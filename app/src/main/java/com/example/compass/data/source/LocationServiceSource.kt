@@ -1,35 +1,28 @@
 package com.example.compass.data.source
 
+import android.location.Location
 import com.example.compass.data.service.LocationService
+import com.example.compass.model.AzimuthResult
 import com.example.compass.model.LatLng
 import com.example.compass.model.LocationResult
-import com.example.compass.model.toAzimuth
+import com.example.compass.model.locationAzimuth
 
 class LocationServiceSource(
-    locationService: LocationService
-) :
-    LocationService.OnLocationDataListener {
+    var locationService: LocationService
+) {
     init {
-        locationService.onLocationDataListener = this
         locationService.requestLocation()
     }
 
-    lateinit var locationResult: LocationResult
-
-    override fun onLocationData(locationResult: LocationResult) {
-        this.locationResult = locationResult
-    }
-
-    fun getLocationAzimuth(destinationLatLng: LatLng): LocationResult {
-        return when (locationResult) {
-            is LocationResult.Success -> toAzimuth(
-                destinationLatLng,
-                (locationResult as LocationResult.Success).value
-            )
-
-            else -> locationResult
+    fun getLocationAzimuth(latLng: LatLng): AzimuthResult {
+        return when (val locationResult = locationService.getLocationResult()) {
+            is LocationResult.Location -> calculateAzimuth(latLng,locationResult.value)
+            is LocationResult.Failure -> AzimuthResult.Failure(locationResult.message)
         }
     }
 
+    private fun calculateAzimuth(destinationLatLng: LatLng, locationValue: Location): AzimuthResult {
+        return locationValue.locationAzimuth(destinationLatLng)
+    }
 
 }
